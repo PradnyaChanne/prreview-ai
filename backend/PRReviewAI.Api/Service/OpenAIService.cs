@@ -59,32 +59,45 @@ namespace PRReviewAI.Api.Services
 
         private string BuildPrompt(string code, string language)
         {
-            return $@"Analyze the following {language} code and return ONLY a JSON response.
+            return $@"You are a strict senior software engineer performing a thorough code review.
 
-Return exactly this structure:
-{{
-  ""summary"": ""one line overall assessment"",
-  ""score"": 85,
-  ""issues"": [
-    {{
-      ""category"": ""bug"",
-      ""severity"": ""critical"",
-      ""line"": 12,
-      ""description"": ""what the problem is"",
-      ""suggestion"": ""how to fix it""
-    }}
-  ]
-}}
+        Analyze the following {language} code carefully and return ONLY a JSON response.
 
-Categories must be one of: bug, security, performance, style
-Severity must be one of: critical, warning, suggestion
-If no issues found, return empty issues array and score of 100.
+        Be strict and thorough - flag ALL potential issues including:
+        - Division by zero possibilities
+        - Null/undefined reference risks
+        - Missing input validation
+        - Edge cases not handled
+        - Security vulnerabilities
+        - Performance inefficiencies
+        - Poor naming or style issues
 
-Code to review:
-````{language}
-{code}
-```";
+        Return exactly this structure:
+        {{
+        ""summary"": ""one line overall assessment"",
+        ""score"": 85,
+        ""issues"": [
+            {{
+            ""category"": ""bug"",
+            ""severity"": ""critical"",
+            ""line"": 12,
+            ""description"": ""what the problem is"",
+            ""suggestion"": ""how to fix it""
+            }}
+        ]
+        }}
+
+        Categories must be one of: bug, security, performance, style
+        Severity must be one of: critical, warning, suggestion
+        Never return an empty issues array unless the code is truly perfect.
+        If no issues found, return score of 100.
+
+        Code to review:
+        ````{language}
+        {code}
+        ```";
         }
+
 
         private ReviewResult ParseResponse(string responseBody)
         {
