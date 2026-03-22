@@ -2,12 +2,12 @@
 
 An AI-powered code review tool that analyzes your code and provides structured, actionable feedback — instantly. Built with React, ASP.NET Core, and OpenAI GPT.
 
-![PRReview AI Screenshot](assets/screenshot.png)
+![PRReview AI Screenshot](assets/Screenshot.png)
 
 ![Demo](assets/Animation.gif)
 
-## 🚀 Live Demo
-[prreview-ai.vercel.app](https://prreview-ai.vercel.app) <!-- Update after deployment -->
+<!-- ## 🚀 Live Demo -->
+<!-- [prreview-ai.vercel.app](https://prreview-ai.vercel.app) Update after deployment -->
 
 ---
 
