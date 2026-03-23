@@ -1,0 +1,13 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "prreview-ai-backend",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "5001",
+      "HostPort": "80"
+    }
+  ]
+}
