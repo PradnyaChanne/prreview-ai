@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<OpenAIService>();
+builder.Services.AddScoped<GitHubService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

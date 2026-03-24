@@ -10,6 +10,7 @@ services:
       - /app/node_modules
     environment:
       - VITE_API_URL=http://localhost:5001
+      - VITE_GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
 
   backend:
     build:
@@ -22,3 +23,5 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - OpenAI__ApiKey=${OPENAI_API_KEY}
+      - GitHub__ClientId=${GITHUB_CLIENT_ID}
+      - GitHub__ClientSecret=${GITHUB_CLIENT_SECRET}
