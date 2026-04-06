@@ -17,8 +17,7 @@ builder.Services.AddCors(options =>
                 "https://techcrunchy.online"
             )
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowAnyMethod();
     });
 });
 
@@ -30,6 +29,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
+
 app.UseCors("AllowFrontend");
+
 app.MapControllers();
+
 app.Run();
