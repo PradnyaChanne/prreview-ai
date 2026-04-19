@@ -19,23 +19,39 @@ namespace PRReviewAI.Api.Services
             _clientSecret = configuration["GitHub:ClientSecret"] ?? string.Empty;
         }
 
-        public async Task<string> ExchangeCodeForToken(string code)
+    public async Task<string> ExchangeCodeForToken(string code)
+    {
+        var url = $"https://github.com/login/oauth/access_token" +
+                $"?client_id={_clientId}" +
+                $"&client_secret={_clientSecret}" +
+                $"&code={code}";
+
+        var request = new HttpRequestMessage(HttpMethod.Post, url);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        var response = await _httpClient.SendAsync(request);
+        var body = await response.Content.ReadAsStringAsync();
+
+        Console.WriteLine("GitHub token response: " + body);
+
+        var doc = JsonDocument.Parse(body);
+
+        // Check for error
+        if (doc.RootElement.TryGetProperty("error", out var error))
         {
-            var url = $"https://github.com/login/oauth/access_token" +
-                      $"?client_id={_clientId}" +
-                      $"&client_secret={_clientSecret}" +
-                      $"&code={code}";
-
-            var request = new HttpRequestMessage(HttpMethod.Post, url);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var response = await _httpClient.SendAsync(request);
-            var body = await response.Content.ReadAsStringAsync();
-
-            var doc = JsonDocument.Parse(body);
-            return doc.RootElement.GetProperty("access_token").GetString() ?? string.Empty;
+            var errorDesc = doc.RootElement.TryGetProperty("error_description", out var desc) 
+                ? desc.GetString() 
+                : error.GetString();
+            throw new Exception($"GitHub OAuth error: {errorDesc}");
         }
 
+        if (!doc.RootElement.TryGetProperty("access_token", out var token))
+        {
+            throw new Exception($"No access_token in response: {body}");
+        }
+
+        return token.GetString() ?? string.Empty;
+    }
       public async Task<List<GitHubRepo>> GetRepos(string accessToken)
     {
         var request = new HttpRequestMessage(HttpMethod.Get,
