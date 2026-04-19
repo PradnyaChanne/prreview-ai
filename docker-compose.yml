@@ -21,7 +21,7 @@ services:
     env_file:
       - .env
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - OpenAI__ApiKey=${OPENAI_API_KEY}
       - GitHub__ClientId=${GITHUB_CLIENT_ID}
       - GitHub__ClientSecret=${GITHUB_CLIENT_SECRET}
