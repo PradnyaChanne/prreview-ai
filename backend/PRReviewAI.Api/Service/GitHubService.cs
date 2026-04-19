@@ -11,13 +11,16 @@ namespace PRReviewAI.Api.Services
         private readonly string _clientSecret;
 
         public GitHubService(IConfiguration configuration)
-        {
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.UserAgent
-                .Add(new System.Net.Http.Headers.ProductInfoHeaderValue("PRReviewAI", "1.0"));
-            _clientId = configuration["GitHub:ClientId"] ?? string.Empty;
-            _clientSecret = configuration["GitHub:ClientSecret"] ?? string.Empty;
-        }
+{
+    _httpClient = new HttpClient();
+    _httpClient.DefaultRequestHeaders.UserAgent
+        .Add(new System.Net.Http.Headers.ProductInfoHeaderValue("PRReviewAI", "1.0"));
+    _clientId = configuration["GitHub:ClientId"] ?? string.Empty;
+    _clientSecret = configuration["GitHub:ClientSecret"] ?? string.Empty;
+    
+    Console.WriteLine($"GitHub ClientId loaded: '{_clientId}'");
+    Console.WriteLine($"GitHub ClientSecret loaded: '{_clientSecret?.Substring(0, 5)}...'");
+}
 
     public async Task<string> ExchangeCodeForToken(string code)
     {
@@ -106,5 +109,7 @@ namespace PRReviewAI.Api.Services
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
                 ?? new List<GitHubFile>();
         }
+        
+
     }
 }
